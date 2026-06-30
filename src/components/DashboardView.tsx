@@ -208,7 +208,7 @@ export default function DashboardView({
   return (
     <div className="space-y-6" id="dashboard-tab-content">
       {/* Action Header */}
-      <div className="flex justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm print:hidden">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm print:hidden">
         <div>
           <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
             Yönetim Özeti
@@ -224,7 +224,7 @@ export default function DashboardView({
               window.print();
             }
           }}
-          className="flex items-center gap-2 bg-blue-50 text-blue-700 hover:bg-blue-100 hover:text-blue-800 px-4 py-2 rounded-lg text-sm font-bold transition border border-blue-200 shadow-xs cursor-pointer"
+          className="flex items-center justify-center w-full sm:w-auto gap-2 bg-blue-50 text-blue-700 hover:bg-blue-100 hover:text-blue-800 px-4 py-2 rounded-lg text-sm font-bold transition border border-blue-200 shadow-xs cursor-pointer"
         >
           <Printer className="w-4 h-4" />
           Hızlı Rapor Oluştur (PDF)

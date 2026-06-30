@@ -170,7 +170,7 @@ export default function GuvenlikView({ participants }: GuvenlikViewProps) {
   
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
         <div>
           <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
             Güvenlik ve Operasyon
@@ -214,7 +214,7 @@ export default function GuvenlikView({ participants }: GuvenlikViewProps) {
       {/* Ziyaretçi Logları */}
       {activeTab === 'ziyaretci' && (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm space-y-6">
-          <div className="flex justify-between items-center pb-4 border-b border-gray-100 dark:border-gray-700">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-gray-100 dark:border-gray-700">
             <div>
               <h3 className="font-bold text-sm text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
                 <UserCheck className="w-5 h-5 text-indigo-600" />
@@ -225,11 +225,11 @@ export default function GuvenlikView({ participants }: GuvenlikViewProps) {
               </p>
             </div>
             {!isAddingVisitor ? (
-              <button onClick={() => setIsAddingVisitor(true)} className="bg-indigo-700 hover:bg-indigo-800 text-white font-extrabold text-xs py-2 px-4 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-xs">
+              <button onClick={() => setIsAddingVisitor(true)} className="w-full sm:w-auto shrink-0 justify-center bg-indigo-700 hover:bg-indigo-800 text-white font-extrabold text-xs py-2 px-4 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-xs">
                 <Plus className="w-4 h-4" /> Yeni Giriş Kaydı
               </button>
             ) : (
-              <button onClick={() => setIsAddingVisitor(false)} className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold text-xs py-2 px-4 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-xs">
+              <button onClick={() => setIsAddingVisitor(false)} className="w-full sm:w-auto shrink-0 justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold text-xs py-2 px-4 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-xs">
                 İptal
               </button>
             )}

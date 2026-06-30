@@ -915,11 +915,11 @@ export default function RegistrationView({
 
           {/* Quick inline tab switcher for responsive/collapsed state convenience */}
           {onChangeSubView && (
-            <div className="flex bg-gray-100 p-1 rounded-xl text-xs font-bold self-start md:self-auto shadow-3xs border border-gray-200">
+            <div className="flex bg-gray-100 p-1 rounded-xl text-xs font-bold w-full md:w-auto shadow-3xs border border-gray-200">
               <button
                 type="button"
                 onClick={() => onChangeSubView('form')}
-                className={`px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
+                className={`flex-1 md:flex-none px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
                   activeSubView === 'form'
                     ? 'bg-white text-emerald-800 shadow-xs'
                     : 'text-gray-500 hover:text-gray-900'
@@ -930,7 +930,7 @@ export default function RegistrationView({
               <button
                 type="button"
                 onClick={() => onChangeSubView('queue')}
-                className={`px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
+                className={`flex-1 md:flex-none px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
                   activeSubView === 'queue'
                     ? 'bg-white text-emerald-800 shadow-xs'
                     : 'text-gray-500 hover:text-gray-900'
@@ -1459,7 +1459,7 @@ export default function RegistrationView({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <div>
                     <label className="block text-[10px] font-bold text-gray-600">Doğum Tarihi *</label>
                     <input
@@ -2005,28 +2005,28 @@ export default function RegistrationView({
                           <FileDown className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                      <div className="flex gap-1.5 self-end">
+                      <div className="flex flex-wrap sm:flex-nowrap gap-1.5 self-stretch sm:self-end w-full sm:w-auto mt-2 sm:mt-0">
                         <button
                           onClick={() => setEditingParticipant(app)}
-                          className="p-1 px-2 border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-emerald-500 hover:text-emerald-700 font-bold rounded text-3xs flex items-center gap-1 cursor-pointer"
+                          className="flex-1 sm:flex-none justify-center p-1 px-2 border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-emerald-500 hover:text-emerald-700 font-bold rounded text-3xs flex items-center gap-1 cursor-pointer"
                         >
                           <Pencil className="w-3 h-3" /> Düzenle
                         </button>
                         <button
                           onClick={() => handleStatusChange(app.id, 'Reddedildi')}
-                          className="p-1 px-2 border border-red-200 text-red-650 hover:bg-red-50 font-bold rounded text-3xs flex items-center gap-0.5 cursor-pointer"
+                          className="flex-1 sm:flex-none justify-center p-1 px-2 border border-red-200 text-red-650 hover:bg-red-50 font-bold rounded text-3xs flex items-center gap-0.5 cursor-pointer"
                         >
                           <X className="w-3.5 h-3.5" /> Reddet
                         </button>
                         <button
                           onClick={() => handleStatusChange(app.id, 'Yedek Listede')}
-                          className="p-1 px-2 border border-purple-200 text-purple-700 hover:bg-purple-50 font-bold rounded text-3xs flex items-center gap-0.5 cursor-pointer"
+                          className="flex-1 sm:flex-none justify-center p-1 px-2 border border-purple-200 text-purple-700 hover:bg-purple-50 font-bold rounded text-3xs flex items-center gap-0.5 cursor-pointer"
                         >
                           Yedeğe Al
                         </button>
                         <button
                           onClick={() => handleStatusChange(app.id, 'Onaylandı')}
-                          className="p-1 px-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded text-3xs flex items-center gap-0.5 cursor-pointer"
+                          className="flex-1 sm:flex-none justify-center p-1 px-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded text-3xs flex items-center gap-0.5 cursor-pointer"
                         >
                           <Check className="w-3.5 h-3.5" /> Onayla
                         </button>
@@ -2491,25 +2491,25 @@ export default function RegistrationView({
                     <h4 className="font-black text-gray-900">Kafile Toplu Karar Mekanizması</h4>
                     <p className="text-3xs text-gray-550 font-bold">Kafilenin tüm üyelerine aynı kararı tek tıkla uygulayabilirsiniz.</p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap sm:flex-nowrap gap-2 w-full sm:w-auto">
                     <button
                       type="button"
                       onClick={() => handleConvoyBulkAction('Reddedildi')}
-                      className="py-1.5 px-3 bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 text-3xs font-black rounded-xl transition cursor-pointer"
+                      className="flex-1 sm:flex-none py-1.5 px-3 bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 text-3xs font-black rounded-xl transition cursor-pointer"
                     >
                       Tüm Kafileyi Reddet
                     </button>
                     <button
                       type="button"
                       onClick={() => handleConvoyBulkAction('Yedek Listede')}
-                      className="py-1.5 px-3 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 text-3xs font-black rounded-xl transition cursor-pointer"
+                      className="flex-1 sm:flex-none py-1.5 px-3 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 text-3xs font-black rounded-xl transition cursor-pointer"
                     >
                       Tüm Kafileyi Yedeğe Al
                     </button>
                     <button
                       type="button"
                       onClick={() => handleConvoyBulkAction('Onaylandı')}
-                      className="py-1.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-3xs font-black rounded-xl transition shadow-sm cursor-pointer"
+                      className="flex-1 sm:flex-none py-1.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-3xs font-black rounded-xl transition shadow-sm cursor-pointer"
                     >
                       Tüm Kafileyi Onayla
                     </button>

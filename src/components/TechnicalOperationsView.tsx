@@ -754,10 +754,10 @@ export default function TechnicalOperationsView({
             {!activeSubView ? (
               <div 
                 onClick={() => onChangeSubView ? onChangeSubView('dashboard') : setIsDashboardOpen(!isDashboardOpen)}
-                className="flex justify-between items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
+                className="flex justify-between items-start sm:items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
               >
-                <div className="flex items-center gap-2.5">
-                  <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+                <div className="flex items-start sm:items-center gap-2.5">
+                  <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                     <TrendingUp className="w-4 h-4" />
                   </span>
                   <div>
@@ -765,13 +765,13 @@ export default function TechnicalOperationsView({
                     <p className="text-[10px] text-gray-400 font-semibold mt-0.5">SLA hedefleri, departman bazlı iş yükü ve genel teknik veriler.</p>
                   </div>
                 </div>
-                <button type="button" className="text-gray-400 hover:text-emerald-700 p-1">
+                <button type="button" className="text-gray-400 hover:text-emerald-700 p-1 shrink-0 ml-2">
                   {isDashboardOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                 </button>
               </div>
             ) : (
-              <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-center gap-2.5">
-                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+              <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-start sm:items-center gap-2.5">
+                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                   <TrendingUp className="w-4 h-4" />
                 </span>
                 <div>
@@ -1025,10 +1025,10 @@ export default function TechnicalOperationsView({
           {!activeSubView ? (
             <div 
               onClick={() => onChangeSubView ? onChangeSubView('issues') : setIsIssuesOpen(!isIssuesOpen)}
-              className="flex justify-between items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
+              className="flex justify-between items-start sm:items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
             >
-              <div className="flex items-center gap-2.5">
-                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+              <div className="flex items-start sm:items-center gap-2.5">
+                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                   <Wrench className="w-4 h-4" />
                 </span>
                 <div>
@@ -1036,13 +1036,13 @@ export default function TechnicalOperationsView({
                   <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Saha personeli tarafından girilen aktif elektrik, su, donanım arıza kayıtları.</p>
                 </div>
               </div>
-              <button type="button" className="text-gray-400 hover:text-emerald-700 p-1">
+              <button type="button" className="text-gray-400 hover:text-emerald-700 p-1 shrink-0 ml-2">
                 {isIssuesOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
               </button>
             </div>
           ) : (
-            <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-center gap-2.5">
-              <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+            <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-start sm:items-center gap-2.5">
+              <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                 <Wrench className="w-4 h-4" />
               </span>
               <div>
@@ -1173,10 +1173,10 @@ export default function TechnicalOperationsView({
           {!activeSubView ? (
             <div 
               onClick={() => onChangeSubView ? onChangeSubView('requests') : setIsRequestsOpen(!isRequestsOpen)}
-              className="flex justify-between items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
+              className="flex justify-between items-start sm:items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
             >
-              <div className="flex items-center gap-2.5">
-                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+              <div className="flex items-start sm:items-center gap-2.5">
+                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                   <ClipboardList className="w-4 h-4" />
                 </span>
                 <div>
@@ -1184,13 +1184,13 @@ export default function TechnicalOperationsView({
                   <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Sarf malzeme, teknik araç-gereç ve departman ihtiyaçlarının onay ve satın alma süreçleri.</p>
                 </div>
               </div>
-              <button type="button" className="text-gray-400 hover:text-emerald-700 p-1">
+              <button type="button" className="text-gray-400 hover:text-emerald-700 p-1 shrink-0 ml-2">
                 {isRequestsOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
               </button>
             </div>
           ) : (
-            <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-center gap-2.5">
-              <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+            <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-start sm:items-center gap-2.5">
+              <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                 <ClipboardList className="w-4 h-4" />
               </span>
               <div>
@@ -1339,10 +1339,10 @@ export default function TechnicalOperationsView({
           {!activeSubView ? (
             <div 
               onClick={() => onChangeSubView ? onChangeSubView('ai-copilot') : setIsAiCopilotOpen(!isAiCopilotOpen)}
-              className="flex justify-between items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
+              className="flex justify-between items-start sm:items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
             >
-              <div className="flex items-center gap-2.5">
-                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+              <div className="flex items-start sm:items-center gap-2.5">
+                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                   <Sparkles className="w-4 h-4 text-amber-500" />
                 </span>
                 <div>
@@ -1350,13 +1350,13 @@ export default function TechnicalOperationsView({
                   <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Yapay zeka ile arıza tahminleri, planlı bakım önerileri ve karar destek önerileri.</p>
                 </div>
               </div>
-              <button type="button" className="text-gray-400 hover:text-emerald-700 p-1">
+              <button type="button" className="text-gray-400 hover:text-emerald-700 p-1 shrink-0 ml-2">
                 {isAiCopilotOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
               </button>
             </div>
           ) : (
-            <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-center gap-2.5">
-              <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+            <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-start sm:items-center gap-2.5">
+              <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                 <Sparkles className="w-4 h-4 text-amber-500" />
               </span>
               <div>
@@ -1487,10 +1487,10 @@ export default function TechnicalOperationsView({
           {!activeSubView ? (
             <div 
               onClick={() => onChangeSubView ? onChangeSubView('reports') : setIsReportsOpen(!isReportsOpen)}
-              className="flex justify-between items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
+              className="flex justify-between items-start sm:items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
             >
-              <div className="flex items-center gap-2.5">
-                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+              <div className="flex items-start sm:items-center gap-2.5">
+                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                   <FileText className="w-4 h-4" />
                 </span>
                 <div>
@@ -1498,13 +1498,13 @@ export default function TechnicalOperationsView({
                   <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Teknik dökümler hazırlama, maliyet analiz raporları ve resmi onay çıktıları.</p>
                 </div>
               </div>
-              <button type="button" className="text-gray-400 hover:text-emerald-700 p-1">
+              <button type="button" className="text-gray-400 hover:text-emerald-700 p-1 shrink-0 ml-2">
                 {isReportsOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
               </button>
             </div>
           ) : (
-            <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-center gap-2.5">
-              <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+            <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-start sm:items-center gap-2.5">
+              <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                 <FileText className="w-4 h-4" />
               </span>
               <div>
@@ -1607,10 +1607,10 @@ export default function TechnicalOperationsView({
           {!activeSubView ? (
             <div 
               onClick={() => onChangeSubView ? onChangeSubView('areas') : setIsAreasOpen(!isAreasOpen)}
-              className="flex justify-between items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
+              className="flex justify-between items-start sm:items-center p-4 bg-gray-50/75 hover:bg-gray-50 cursor-pointer select-none transition duration-150"
             >
-              <div className="flex items-center gap-2.5">
-                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+              <div className="flex items-start sm:items-center gap-2.5">
+                <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                   <MapPin className="w-4 h-4 text-emerald-600" />
                 </span>
                 <div>
@@ -1618,13 +1618,13 @@ export default function TechnicalOperationsView({
                   <p className="text-[10px] text-gray-400 font-semibold mt-0.5">Bungalovlar, göl, spor tesisleri, yemekhane ve idari ortak alanlar.</p>
                 </div>
               </div>
-              <button type="button" className="text-gray-400 hover:text-emerald-700 p-1">
+              <button type="button" className="text-gray-400 hover:text-emerald-700 p-1 shrink-0 ml-2">
                 {isAreasOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
               </button>
             </div>
           ) : (
-            <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-center gap-2.5">
-              <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg">
+            <div className="p-5 bg-gradient-to-r from-emerald-50/20 to-transparent border-b border-gray-100 flex items-start sm:items-center gap-2.5">
+              <span className="p-1.5 bg-emerald-50 text-emerald-800 rounded-lg shrink-0">
                 <MapPin className="w-4 h-4 text-emerald-600" />
               </span>
               <div>
@@ -2094,6 +2094,9 @@ export default function TechnicalOperationsView({
       })()}
         </div>
       )}
+          </div>
+        )}
+      </div>
 
       {/* ---------------------------------------------------------
           DETAYLI MÜDAHALE & ARIZA LOGI MODAL
@@ -3215,9 +3218,6 @@ export default function TechnicalOperationsView({
           </div>
         );
       })()}
-          </div>
-        )}
-      </div>
 
       {/* Print Warning Modal for iframe */}
       {showPrintWarning && (

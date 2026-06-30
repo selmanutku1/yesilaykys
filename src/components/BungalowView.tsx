@@ -270,10 +270,10 @@ export default function BungalowView({
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 self-stretch sm:self-auto shrink-0">
+        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 self-stretch sm:self-auto shrink-0">
           <button
             onClick={handleApplyYesilayTemplate}
-            className="bg-amber-50 text-amber-800 hover:bg-amber-100 px-4 py-2.5 rounded-lg text-xs font-semibold flex items-center gap-2 transition cursor-pointer"
+            className="bg-amber-50 text-amber-800 hover:bg-amber-100 px-4 py-2.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition cursor-pointer"
             title="Sistemdeki tüm odaları siller; Yeşilay temalı 3 Lider ve 30 Standart (4'er kişilik) oda yerleşim şablonunu uygular."
           >
             <RefreshCw className="w-4 h-4" />
@@ -282,7 +282,7 @@ export default function BungalowView({
 
           <button
             onClick={() => setShowAddForm(!showAddForm)}
-            className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 px-4 py-2.5 rounded-lg text-xs font-semibold flex items-center gap-2 transition cursor-pointer"
+            className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 px-4 py-2.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             Yeni Bungalov Ekle
@@ -290,7 +290,7 @@ export default function BungalowView({
 
           <button
             onClick={handleAutoAllocate}
-            className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:from-emerald-700 hover:to-teal-700 flex items-center gap-2 transition shadow-sm cursor-pointer"
+            className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:from-emerald-700 hover:to-teal-700 flex items-center justify-center gap-2 transition shadow-sm cursor-pointer"
           >
             <Sparkles className="w-4 h-4 animate-pulse" />
             Akıllı Otomatik Yerleştirme

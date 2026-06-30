@@ -494,7 +494,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200 flex flex-col font-sans" id="yesilay-kys-master-parent">
       
       {/* SaaS Executive Header Banner */}
-      <header className="bg-white dark:bg-gray-800 border-b border-gray-150 dark:border-gray-700 px-6 py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sticky top-0 z-30 shadow-xs transition-colors duration-200">
+      <header className="bg-white dark:bg-gray-800 border-b border-gray-150 dark:border-gray-700 px-4 md:px-6 py-3 md:py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sticky top-0 z-30 shadow-xs transition-colors duration-200">
         {/* Brand & Turkey Crest */}
         <div className="flex items-center justify-between w-full md:w-auto">
           <div className="flex items-center gap-3">
@@ -1041,7 +1041,7 @@ export default function App() {
         </nav>
 
         {/* Dynamic workspace panel */}
-        <main className="flex-1 p-6 lg:p-8 overflow-y-auto max-w-[1600px] mx-auto w-full">
+        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto max-w-[1600px] mx-auto w-full">
           {/* Active Tab View routers */}
           
           {activeTab === 'dashboard' && (

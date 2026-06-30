@@ -254,7 +254,7 @@ export default function YemekhaneView({
 
         <button
           onClick={handleOpenAddModal}
-          className="bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs py-2.5 px-4 rounded-xl flex items-center gap-2 transition cursor-pointer self-start sm:self-auto shadow-xs"
+          className="bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition cursor-pointer w-full sm:w-auto shadow-xs"
         >
           <Plus className="w-4 h-4" />
           Yeni Öğün Planı Ekle
