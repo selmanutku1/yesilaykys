@@ -45,7 +45,11 @@ function readState() {
   try {
     if (fs.existsSync(DB_FILE)) {
       const data = fs.readFileSync(DB_FILE, 'utf8');
-      return JSON.parse(data);
+      const parsed = JSON.parse(data);
+      if (parsed.bungalows) {
+        parsed.bungalows = parsed.bungalows.map((b: any) => ({ ...b, capacity: 6 }));
+      }
+      return parsed;
     }
   } catch (error) {
     console.error('Error reading db_store.json, resetting to initial', error);
@@ -78,9 +82,11 @@ async function startServer() {
 
   app.post('/api/state/sync', (req, res) => {
     try {
-      const state = req.body;
-      if (state && typeof state === 'object') {
-        writeState(state);
+      const partialState = req.body;
+      if (partialState && typeof partialState === 'object') {
+        const currentState = readState();
+        const newState = { ...currentState, ...partialState };
+        writeState(newState);
         res.json({ success: true });
       } else {
         res.status(400).json({ error: 'Geçersiz veri formatı' });
