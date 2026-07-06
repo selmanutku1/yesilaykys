@@ -1,10 +1,155 @@
 const fs = require('fs');
-let code = fs.readFileSync('src/data.ts', 'utf8');
+let code = fs.readFileSync('src/components/BungalowView.tsx', 'utf8');
 
-if (!code.includes('INITIAL_INCIDENTS')) {
-  code = code.replace(
-    /export const INITIAL_LOGS/,
-    `import { CampIncident } from './types';\n\nexport const INITIAL_INCIDENTS: CampIncident[] = [\n  {\n    id: 'INC-001',\n    type: 'disiplin',\n    reporterId: 'S01',\n    reporterName: 'İnan BAYRAMOĞLU',\n    dateTime: '2026-06-16T15:30:00',\n    title: 'Kurallara Uymama',\n    description: 'Etkinlik saatinde kamp alanından izinsiz ayrılma girişimi.',\n    relatedParticipantId: 'P03',\n    actionTaken: 'Sözlü uyarı yapıldı.',\n    status: 'Çözüldü'\n  },\n  {\n    id: 'INC-002',\n    type: 'guvenlik',\n    reporterId: 'S11',\n    reporterName: 'Ahmet Güvenlik',\n    dateTime: '2026-06-17T22:15:00',\n    title: 'Çevre Çit Kontrolü',\n    description: 'Kuzey cephesindeki çitlerde hasar tespit edildi.',\n    actionTaken: 'Geçici önlem alındı, onarım talebi açıldı.',\n    status: 'Açık'\n  }\n];\n\nexport const INITIAL_LOGS`
-  );
-  fs.writeFileSync('src/data.ts', code);
-}
+const strToFind = `  // Smart Auto-allocation motor honoring gender segregation for security/KVKK guidelines!
+  const handleAutoAllocate = () => {
+    let unassigned = participants.filter(
+      (p) => !p.bungalowId && p.status === "Onaylandı",
+    );
+    if (unassigned.length === 0) {
+      alert("Yerleştirilecek bekleyen onaylı yeni katılımcı bulunamadı.");
+      return;
+    }
+
+    const updatedParticipants = [...participants];
+    let count = 0;
+
+    // Loop through each bungalow to find vacant beds
+    for (const bg of centerBungalows) {
+      const bOccupants = updatedParticipants.filter(
+        (p) => p.bungalowId === bg.id,
+      );
+
+      // Find free bed indices
+      const filledBeds = bOccupants.map((o) => o.bedNumber);
+
+      for (let bed = 1; bed <= bg.capacity; bed++) {
+        if (!filledBeds.includes(bed)) {
+          // Find candidates matching room gender constraint and camp period rules
+          const candidateIndex = unassigned.findIndex((cand) => {
+            return canAssignToBungalow(cand, bg.id, updatedParticipants).allowed;
+          });
+
+          if (candidateIndex !== -1) {
+            const candidate = unassigned[candidateIndex];
+
+            // Apply assignment
+            const pIdx = updatedParticipants.findIndex(
+              (p) => p.id === candidate.id,
+            );
+            updatedParticipants[pIdx] = {
+              ...updatedParticipants[pIdx],
+              bungalowId: bg.id,
+              bedNumber: bed,
+              status: "Kampta",
+              checkedIn: true,
+              checkInTime: new Date().toISOString().slice(0, 19),
+            };
+
+            // Remove from local unassigned pool
+            unassigned.splice(candidateIndex, 1);
+            count++;
+          }
+        }
+      }
+    }
+
+    onUpdateParticipants(updatedParticipants);
+    onAddLog(
+      "Otomatik Yerleşim",
+      \`Akıllı yerleşim algoritması çalıştırıldı. \${count} katılımcı yaş/cinsiyet uyumuna göre uygun bungalovlara yerleştirildi.\`,
+    );
+    alert(
+      \`Başarılı: \${count} katılımcı kriterlere göre bungalovlara yerleştirildi!\`,
+    );
+  };`;
+
+const replacement = `  // Smart Auto-allocation motor honoring gender segregation for security/KVKK guidelines!
+  const executeSmartAllocation = async () => {
+    setIsAllocating(true);
+    
+    // Simulate complex rule processing
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    let unassigned = participants.filter(
+      (p) => !p.bungalowId && p.status === "Onaylandı",
+    );
+    
+    if (unassigned.length === 0) {
+      alert("Yerleştirilecek bekleyen onaylı yeni katılımcı bulunamadı.");
+      setIsAllocating(false);
+      setShowSmartAllocationModal(false);
+      return;
+    }
+
+    const updatedParticipants = [...participants];
+    let count = 0;
+
+    // A basic implementation of "groupTogether" rule: sort unassigned by convoyName first
+    if (smartRules.groupTogether) {
+      unassigned.sort((a, b) => (a.convoyName || '').localeCompare(b.convoyName || ''));
+    }
+
+    // Loop through each bungalow to find vacant beds
+    for (const bg of centerBungalows) {
+      const bOccupants = updatedParticipants.filter(
+        (p) => p.bungalowId === bg.id,
+      );
+
+      const filledBeds = bOccupants.map((o) => o.bedNumber);
+
+      for (let bed = 1; bed <= bg.capacity; bed++) {
+        if (!filledBeds.includes(bed)) {
+          // Find candidates matching room gender constraint and camp period rules
+          let candidateIndex = -1;
+          
+          if (smartRules.groupTogether && bOccupants.length > 0) {
+            // try to find someone from same group as existing occupants
+            const currentGroups = new Set(bOccupants.map(o => o.convoyName).filter(Boolean));
+            candidateIndex = unassigned.findIndex((cand) => {
+              return canAssignToBungalow(cand, bg.id, updatedParticipants).allowed && 
+                     cand.convoyName && currentGroups.has(cand.convoyName);
+            });
+          }
+          
+          // Fallback if no matching group or rule not applied
+          if (candidateIndex === -1) {
+            candidateIndex = unassigned.findIndex((cand) => {
+              return canAssignToBungalow(cand, bg.id, updatedParticipants).allowed;
+            });
+          }
+
+          if (candidateIndex !== -1) {
+            const candidate = unassigned[candidateIndex];
+
+            // Apply assignment
+            const pIdx = updatedParticipants.findIndex(
+              (p) => p.id === candidate.id,
+            );
+            updatedParticipants[pIdx] = {
+              ...updatedParticipants[pIdx],
+              bungalowId: bg.id,
+              bedNumber: bed,
+              status: "Kampta",
+              checkedIn: true,
+              checkInTime: new Date().toISOString().slice(0, 19),
+            };
+            unassigned.splice(candidateIndex, 1);
+            count++;
+          }
+        }
+      }
+    }
+
+    onUpdateParticipants(updatedParticipants);
+    onAddLog(
+      "Akıllı Yerleştirme",
+      \`Seçili kurallara göre \${count} katılımcı otomatik olarak odalara yerleştirildi.\`,
+    );
+    
+    setIsAllocating(false);
+    setShowSmartAllocationModal(false);
+  };`;
+
+code = code.replace(strToFind, replacement);
+fs.writeFileSync('src/components/BungalowView.tsx', code);

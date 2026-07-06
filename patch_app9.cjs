@@ -1,23 +1,14 @@
 const fs = require('fs');
 let code = fs.readFileSync('src/App.tsx', 'utf8');
 
-const strToFind = `{activeTab === 'dijital-arsiv' && (
-            <DijitalArsivView />
-          )}`;
+code = code.replace(
+  /import DijitalArsivView from '\.\/components\/DijitalArsivView';/,
+  `import DijitalArsivView from './components/DijitalArsivView';\nimport IncidentLogsView from './components/IncidentLogsView';`
+);
 
-const replacement = `{activeTab === 'dijital-arsiv' && (
-            <DijitalArsivView />
-          )}
+code = code.replace(
+  /  BookText,\n  Video,/g,
+  `  BookText,\n  Video,\n  AlertOctagon,`
+);
 
-          {activeTab === 'olay-kayit' && (
-            <IncidentLogsView
-              incidents={incidents}
-              onUpdateIncidents={setIncidents}
-              onAddLog={addSystemLog}
-              currentUserId={currentUser.id}
-              currentUserName={currentUser.name}
-            />
-          )}`;
-
-code = code.replace(strToFind, replacement);
 fs.writeFileSync('src/App.tsx', code);

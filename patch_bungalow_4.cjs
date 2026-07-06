@@ -1,155 +1,60 @@
 const fs = require('fs');
-let code = fs.readFileSync('src/components/BungalowView.tsx', 'utf8');
+let code = fs.readFileSync('src/App.tsx', 'utf8');
 
-const strToFind = `  // Smart Auto-allocation motor honoring gender segregation for security/KVKK guidelines!
-  const handleAutoAllocate = () => {
-    let unassigned = participants.filter(
-      (p) => !p.bungalowId && p.status === "Onaylandı",
-    );
-    if (unassigned.length === 0) {
-      alert("Yerleştirilecek bekleyen onaylı yeni katılımcı bulunamadı.");
-      return;
-    }
+// Remove from current position
+const blockToRemove = `          {hasAccess('olay-kayit') && (
+            <button
+              onClick={() => handleActiveTabChange('olay-kayit')}
+              title="Olay Kayıt Sistemi"
+              className={\`flex items-center rounded-xl text-xs font-bold transition-all text-left \${
+                isSidebarCollapsed ? 'lg:justify-center lg:px-2 py-2.5' : 'px-3 py-2.5 gap-3'
+              } \${
+                activeTab === 'olay-kayit'
+                  ? 'bg-red-600 text-white shadow-xs' 
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100/60 dark:hover:bg-gray-700/60 hover:text-gray-900 dark:hover:text-white'
+              }\`}
+            >
+              <AlertOctagon className="w-4 h-4 shrink-0" />
+              <span className={\`\${isSidebarCollapsed ? 'lg:hidden' : 'block'}\`}>
+                Olay Kayıt Sistemi
+              </span>
+            </button>
+          )}\n\n`;
 
-    const updatedParticipants = [...participants];
-    let count = 0;
+code = code.replace(blockToRemove, '');
 
-    // Loop through each bungalow to find vacant beds
-    for (const bg of centerBungalows) {
-      const bOccupants = updatedParticipants.filter(
-        (p) => p.bungalowId === bg.id,
-      );
+// Append after dijital-arsiv
+const insertAfter = `              </span>
+            </button>
+          )}
 
-      // Find free bed indices
-      const filledBeds = bOccupants.map((o) => o.bedNumber);
+          {hasAccess('sistem-loglari')`;
 
-      for (let bed = 1; bed <= bg.capacity; bed++) {
-        if (!filledBeds.includes(bed)) {
-          // Find candidates matching room gender constraint and camp period rules
-          const candidateIndex = unassigned.findIndex((cand) => {
-            return canAssignToBungalow(cand, bg.id, updatedParticipants).allowed;
-          });
+const blockToAdd = `              </span>
+            </button>
+          )}
 
-          if (candidateIndex !== -1) {
-            const candidate = unassigned[candidateIndex];
+          {hasAccess('olay-kayit') && (
+            <button
+              onClick={() => handleActiveTabChange('olay-kayit')}
+              title="Olay Kayıt Sistemi"
+              className={\`flex items-center rounded-xl text-xs font-bold transition-all text-left \${
+                isSidebarCollapsed ? 'lg:justify-center lg:px-2 py-2.5' : 'px-3 py-2.5 gap-3'
+              } \${
+                activeTab === 'olay-kayit'
+                  ? 'bg-red-600 text-white shadow-xs' 
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100/60 dark:hover:bg-gray-700/60 hover:text-gray-900 dark:hover:text-white'
+              }\`}
+            >
+              <AlertOctagon className="w-4 h-4 shrink-0" />
+              <span className={\`\${isSidebarCollapsed ? 'lg:hidden' : 'block'}\`}>
+                Olay Kayıt Sistemi
+              </span>
+            </button>
+          )}
 
-            // Apply assignment
-            const pIdx = updatedParticipants.findIndex(
-              (p) => p.id === candidate.id,
-            );
-            updatedParticipants[pIdx] = {
-              ...updatedParticipants[pIdx],
-              bungalowId: bg.id,
-              bedNumber: bed,
-              status: "Kampta",
-              checkedIn: true,
-              checkInTime: new Date().toISOString().slice(0, 19),
-            };
+          {hasAccess('sistem-loglari')`;
 
-            // Remove from local unassigned pool
-            unassigned.splice(candidateIndex, 1);
-            count++;
-          }
-        }
-      }
-    }
+code = code.replace(insertAfter, blockToAdd);
 
-    onUpdateParticipants(updatedParticipants);
-    onAddLog(
-      "Otomatik Yerleşim",
-      \`Akıllı yerleşim algoritması çalıştırıldı. \${count} katılımcı yaş/cinsiyet uyumuna göre uygun bungalovlara yerleştirildi.\`,
-    );
-    alert(
-      \`Başarılı: \${count} katılımcı kriterlere göre bungalovlara yerleştirildi!\`,
-    );
-  };`;
-
-const replacement = `  // Smart Auto-allocation motor honoring gender segregation for security/KVKK guidelines!
-  const executeSmartAllocation = async () => {
-    setIsAllocating(true);
-    
-    // Simulate complex rule processing
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    let unassigned = participants.filter(
-      (p) => !p.bungalowId && p.status === "Onaylandı",
-    );
-    
-    if (unassigned.length === 0) {
-      alert("Yerleştirilecek bekleyen onaylı yeni katılımcı bulunamadı.");
-      setIsAllocating(false);
-      setShowSmartAllocationModal(false);
-      return;
-    }
-
-    const updatedParticipants = [...participants];
-    let count = 0;
-
-    // A basic implementation of "groupTogether" rule: sort unassigned by convoyName first
-    if (smartRules.groupTogether) {
-      unassigned.sort((a, b) => (a.convoyName || '').localeCompare(b.convoyName || ''));
-    }
-
-    // Loop through each bungalow to find vacant beds
-    for (const bg of centerBungalows) {
-      const bOccupants = updatedParticipants.filter(
-        (p) => p.bungalowId === bg.id,
-      );
-
-      const filledBeds = bOccupants.map((o) => o.bedNumber);
-
-      for (let bed = 1; bed <= bg.capacity; bed++) {
-        if (!filledBeds.includes(bed)) {
-          // Find candidates matching room gender constraint and camp period rules
-          let candidateIndex = -1;
-          
-          if (smartRules.groupTogether && bOccupants.length > 0) {
-            // try to find someone from same group as existing occupants
-            const currentGroups = new Set(bOccupants.map(o => o.convoyName).filter(Boolean));
-            candidateIndex = unassigned.findIndex((cand) => {
-              return canAssignToBungalow(cand, bg.id, updatedParticipants).allowed && 
-                     cand.convoyName && currentGroups.has(cand.convoyName);
-            });
-          }
-          
-          // Fallback if no matching group or rule not applied
-          if (candidateIndex === -1) {
-            candidateIndex = unassigned.findIndex((cand) => {
-              return canAssignToBungalow(cand, bg.id, updatedParticipants).allowed;
-            });
-          }
-
-          if (candidateIndex !== -1) {
-            const candidate = unassigned[candidateIndex];
-
-            // Apply assignment
-            const pIdx = updatedParticipants.findIndex(
-              (p) => p.id === candidate.id,
-            );
-            updatedParticipants[pIdx] = {
-              ...updatedParticipants[pIdx],
-              bungalowId: bg.id,
-              bedNumber: bed,
-              status: "Kampta",
-              checkedIn: true,
-              checkInTime: new Date().toISOString().slice(0, 19),
-            };
-            unassigned.splice(candidateIndex, 1);
-            count++;
-          }
-        }
-      }
-    }
-
-    onUpdateParticipants(updatedParticipants);
-    onAddLog(
-      "Akıllı Yerleştirme",
-      \`Seçili kurallara göre \${count} katılımcı otomatik olarak odalara yerleştirildi.\`,
-    );
-    
-    setIsAllocating(false);
-    setShowSmartAllocationModal(false);
-  };`;
-
-code = code.replace(strToFind, replacement);
-fs.writeFileSync('src/components/BungalowView.tsx', code);
+fs.writeFileSync('src/App.tsx', code);
