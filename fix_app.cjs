@@ -1,9 +1,14 @@
-# GEMINI_API_KEY: Required for Gemini AI API calls.
-# AI Studio automatically injects this at runtime from user secrets.
-# Users configure this via the Secrets panel in the AI Studio UI.
-GEMINI_API_KEY="MY_GEMINI_API_KEY"
+const fs = require('fs');
+let code = fs.readFileSync('src/App.tsx', 'utf8');
 
-# APP_URL: The URL where this applet is hosted.
-# AI Studio automatically injects this at runtime with the Cloud Run service URL.
-# Used for self-referential links, OAuth callbacks, and API endpoints.
-APP_URL="MY_APP_URL"
+code = code.replace(
+  /allowedTabs: \('dashboard' \| 'bungalov' \| 'katilimci' \| 'kayit' \| 'revir' \| 'yemekhane' \| 'teknik' \| 'guvenlik' \| 'dokümanlar' \| 'ayarlar' \| 'maliyet' \| 'anket-analizi' \| 'sistem-loglari' \| 'dijital-arsiv' \| 'olay-kayit'\) => \{\| 'dijital-arsiv' \| 'olay-kayit'\>\('dashboard'\);\| 'dijital-arsiv' \| 'olay-kayit'\)\[\];/,
+  "allowedTabs: ('dashboard' | 'bungalov' | 'katilimci' | 'kayit' | 'revir' | 'yemekhane' | 'teknik' | 'guvenlik' | 'dokümanlar' | 'ayarlar' | 'maliyet' | 'anket-analizi' | 'sistem-loglari' | 'dijital-arsiv' | 'olay-kayit')[];"
+);
+
+code = code.replace(
+  /useState<'dashboard' \| 'bungalov' \| 'katilimci' \| 'kayit' \| 'revir' \| 'yemekhane' \| 'teknik' \| 'guvenlik' \| 'dokümanlar' \| 'ayarlar' \| 'maliyet' \| 'anket-analizi' \| 'sistem-loglari' \| 'dijital-arsiv' \| 'olay-kayit'\) => \{\| 'dijital-arsiv' \| 'olay-kayit'\>\('dashboard'\);\|'sistem-loglari' \| 'dijital-arsiv' \| 'olay-kayit'\) => \{\| 'dijital-arsiv' \| 'olay-kayit'\>\('dashboard'\);/,
+  "useState<'dashboard' | 'bungalov' | 'katilimci' | 'kayit' | 'revir' | 'yemekhane' | 'teknik' | 'guvenlik' | 'dokümanlar' | 'ayarlar' | 'maliyet' | 'anket-analizi' | 'sistem-loglari' | 'dijital-arsiv' | 'olay-kayit'>('dashboard');"
+);
+
+fs.writeFileSync('src/App.tsx', code);

@@ -1,102 +1,110 @@
 const fs = require('fs');
 let code = fs.readFileSync('src/components/BungalowView.tsx', 'utf8');
 
-const regex = /const handleAutoAllocate = \(\) => \{[\s\S]*?\n  \};\n\n  \/\/ -- Action Handlers --/;
-const match = code.match(/const handleAutoAllocate = \(\) => \{[\s\S]*?\n  \};\n\n  \/\/ -- Action Handlers --/);
-
-if (match) {
-  const replacement = `const executeSmartAllocation = async () => {
-    setIsAllocating(true);
-    
-    // Simulate complex rule processing (Gürültü, Okul, Kamp Grubu)
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    let unassigned = participants.filter(
-      (p) => !p.bungalowId && p.status === "Onaylandı",
-    );
-    
-    if (unassigned.length === 0) {
-      alert("Yerleştirilecek bekleyen onaylı yeni katılımcı bulunamadı.");
-      setIsAllocating(false);
-      setShowSmartAllocationModal(false);
-      return;
-    }
-
-    const updatedParticipants = [...participants];
-    let count = 0;
-
-    // A basic implementation of "groupTogether" rule: sort unassigned by convoyName first
-    if (smartRules.groupTogether) {
-      unassigned.sort((a, b) => (a.convoyName || '').localeCompare(b.convoyName || ''));
-    }
-
-    // Loop through each bungalow to find vacant beds
-    for (const bg of centerBungalows) {
-      const bOccupants = updatedParticipants.filter(
-        (p) => p.bungalowId === bg.id,
-      );
-
-      const filledBeds = bOccupants.map((o) => o.bedNumber);
-
-      for (let bed = 1; bed <= bg.capacity; bed++) {
-        if (!filledBeds.includes(bed)) {
-          // Find candidates matching room gender constraint and camp period rules
-          // With smart rules, we also try to match the group if groupTogether is true
-          let candidateIndex = -1;
-          
-          if (smartRules.groupTogether && bOccupants.length > 0) {
-            // try to find someone from same group as existing occupants
-            const currentGroups = new Set(bOccupants.map(o => o.convoyName).filter(Boolean));
-            candidateIndex = unassigned.findIndex((cand) => {
-              return canAssignToBungalow(cand, bg.id, updatedParticipants).allowed && 
-                     cand.convoyName && currentGroups.has(cand.convoyName);
-            });
-          }
-          
-          // Fallback if no matching group or rule not applied
-          if (candidateIndex === -1) {
-            candidateIndex = unassigned.findIndex((cand) => {
-              return canAssignToBungalow(cand, bg.id, updatedParticipants).allowed;
-            });
-          }
-
-          if (candidateIndex !== -1) {
-            const candidate = unassigned[candidateIndex];
-
-            // Apply assignment
-            const pIdx = updatedParticipants.findIndex(
-              (p) => p.id === candidate.id,
-            );
-            updatedParticipants[pIdx] = {
-              ...updatedParticipants[pIdx],
-              bungalowId: bg.id,
-              bedNumber: bed,
-              status: "Kampta",
-              checkedIn: true,
-              checkInTime: new Date().toISOString().slice(0, 19),
-            };
-            unassigned.splice(candidateIndex, 1);
-            count++;
-          }
-        }
-      }
-    }
-
-    onUpdateParticipants(updatedParticipants);
-    onAddLog(
-      "Akıllı Yerleştirme",
-      \`Seçili kurallara göre \${count} katılımcı otomatik olarak odalara yerleştirildi.\`,
-    );
-    
-    setIsAllocating(false);
-    setShowSmartAllocationModal(false);
-  };
-
-  // -- Action Handlers --`;
-
-  code = code.replace(regex, replacement);
-  fs.writeFileSync('src/components/BungalowView.tsx', code);
-  console.log("Success");
-} else {
-  console.log("Failed to match handleAutoAllocate");
+// Add AlertTriangle to imports if not there
+if (!code.includes('AlertTriangle')) {
+  code = code.replace(
+    /import \{([^\}]+)\} from "lucide-react";/,
+    "import { $1, AlertTriangle } from \"lucide-react\";"
+  );
 }
+
+// 1. Add risks inside filteredBungalows.map
+const mapStrFind = `            {filteredBungalows.map((bg) => {
+              const occupants = getOccupants(bg.id);
+              const filledCount = occupants.length;`;
+              
+const mapStrReplace = `            {filteredBungalows.map((bg) => {
+              const occupants = getOccupants(bg.id);
+              const filledCount = occupants.length;
+              const risks = analyzeBungalowRisks(occupants);
+              const hasRisks = risks.length > 0;`;
+
+code = code.replace(mapStrFind, mapStrReplace);
+
+// 2. Add AlertTriangle to the card
+const cardHeaderFind = `                       <span
+                         className={\`font-bold text-[8px] \${bg.isClosed ? "text-gray-500" : isFull && !hasMatchedOccupant ? "text-white" : "text-gray-800"} leading-none truncate\`}
+                       >
+                         {bg.id}
+                       </span>
+                     </div>`;
+
+const cardHeaderReplace = `                       <span
+                         className={\`font-bold text-[8px] \${bg.isClosed ? "text-gray-500" : isFull && !hasMatchedOccupant ? "text-white" : "text-gray-800"} leading-none truncate\`}
+                       >
+                         {bg.id}
+                       </span>
+                       {hasRisks && <AlertTriangle className="w-2.5 h-2.5 text-amber-500 ml-0.5 shrink-0" />}
+                     </div>`;
+
+code = code.replace(cardHeaderFind, cardHeaderReplace);
+
+// 3. Add Risk warnings inside the Modal
+const modalHeaderFind = `              <div className="flex justify-between items-center p-4 border-b border-gray-100 bg-gray-50/50">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+                    <ArrowUpDown className="w-5 h-5 animate-bounce" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 text-sm md:text-base leading-none">
+                      {bg.name} - Yerleşim Düzenleme Paneli
+                    </h3>
+                    <p className="text-3xs md:text-2xs text-gray-500 mt-1 font-semibold">
+                      Kapasite: {bg.capacity} Kişi | Konum: {bg.type} Blok | {filledCount} / {bg.capacity} Dolu
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    setSelectedBungalowId(null);
+                    setAssignTarget(null);
+                  }}
+                  className="text-gray-400 hover:text-gray-600 transition p-1.5 rounded-full hover:bg-gray-100 cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>`;
+
+const modalHeaderReplace = `              <div className="flex justify-between items-center p-4 border-b border-gray-100 bg-gray-50/50 shrink-0">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+                    <ArrowUpDown className="w-5 h-5 animate-bounce" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 text-sm md:text-base leading-none">
+                      {bg.name} - Yerleşim Düzenleme Paneli
+                    </h3>
+                    <p className="text-3xs md:text-2xs text-gray-500 mt-1 font-semibold">
+                      Kapasite: {bg.capacity} Kişi | Konum: {bg.type} Blok | {filledCount} / {bg.capacity} Dolu
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    setSelectedBungalowId(null);
+                    setAssignTarget(null);
+                  }}
+                  className="text-gray-400 hover:text-gray-600 transition p-1.5 rounded-full hover:bg-gray-100 cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              {analyzeBungalowRisks(occupants).length > 0 && (
+                <div className="bg-amber-50 p-3 border-b border-amber-200 shrink-0 animate-in slide-in-from-top-2">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <AlertTriangle className="w-4 h-4 text-amber-600" />
+                    <h4 className="font-bold text-amber-900 text-xs">Uyumsuzluk Riski Tespit Edildi!</h4>
+                  </div>
+                  <ul className="list-disc pl-5 text-xs text-amber-800 space-y-0.5 font-medium">
+                    {analyzeBungalowRisks(occupants).map((risk, idx) => (
+                      <li key={idx}>{risk}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}`;
+
+code = code.replace(modalHeaderFind, modalHeaderReplace);
+
+fs.writeFileSync('src/components/BungalowView.tsx', code);

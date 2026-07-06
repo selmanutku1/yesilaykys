@@ -1,2 +1,4 @@
-#!/bin/bash
-sed -i '/  const handleActiveTabChange =/i \  \/\/ Klave kısayolları: Ctrl+1 (Dashboard), Ctrl+2 (Bungalov), Ctrl+3 (Katılımcı Defteri)\n  useEffect(() => {\n    const handleKeyDown = (e: KeyboardEvent) => {\n      if (e.ctrlKey || e.metaKey) {\n        if (e.key === '\''1'\'' \&\& hasAccess('\''dashboard'\'')) {\n          e.preventDefault();\n          handleActiveTabChange('\''dashboard'\'');\n        } else if (e.key === '\''2'\'' \&\& hasAccess('\''bungalov'\'')) {\n          e.preventDefault();\n          handleActiveTabChange('\''bungalov'\'');\n        } else if (e.key === '\''3'\'' \&\& hasAccess('\''katilimci'\'')) {\n          e.preventDefault();\n          handleActiveTabChange('\''katilimci'\'');\n        }\n      }\n    };\n    window.addEventListener('\''keydown'\'', handleKeyDown);\n    return () => window.removeEventListener('\''keydown'\'', handleKeyDown);\n  }, [currentUser]);\n' src/App.tsx
+const fs = require('fs');
+let code = fs.readFileSync('src/components/BungalowView.tsx', 'utf8');
+code = code.replace(/Lock,, AlertTriangle \}/, 'Lock, AlertTriangle }');
+fs.writeFileSync('src/components/BungalowView.tsx', code);

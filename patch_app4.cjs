@@ -1,25 +1,14 @@
 const fs = require('fs');
-
-let code = fs.readFileSync('src/components/SettingsView.tsx', 'utf8');
+let code = fs.readFileSync('src/App.tsx', 'utf8');
 
 code = code.replace(
-  /interface SettingsViewProps \{/,
-  `interface SettingsViewProps {\n  currentUser: LoginUser;`
+  /import DijitalArsivView from '\.\/components\/DijitalArsivView';/,
+  `import DijitalArsivView from './components/DijitalArsivView';\nimport IncidentLogsView from './components/IncidentLogsView';`
 );
 
 code = code.replace(
-  /export default function SettingsView\(\{/,
-  `export default function SettingsView({\n  currentUser,`
+  /  BookText,\n  Video,/g,
+  `  BookText,\n  Video,\n  AlertOctagon,`
 );
 
-code = code.replace(
-  /\{\/\* User Management Panel \*\/\}/,
-  `{/* User Management Panel */}\n          {currentUser.role === 'admin' && (`
-);
-
-code = code.replace(
-  /<\/div>\n      <\/div>\n    <\/div>\n  \);\n\}/,
-  `</div>\n          )}\n        </div>\n      </div>\n    </div>\n  );\n}`
-);
-
-fs.writeFileSync('src/components/SettingsView.tsx', code);
+fs.writeFileSync('src/App.tsx', code);
